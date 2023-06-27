@@ -43,7 +43,7 @@ void print_pnm() {
 void clear_frame() {
     for(int x = 0; x < X_res; x++)
         for(int y = 0; y < Y_res; y++)
-            frame[x][y] = background_col;
+            frame[x][y] = environment_col;
 }
 
 
@@ -74,20 +74,20 @@ vec3 calc_normal(vec3 p) {
 }
 
 
-vec3 calc_lighting(vec3 normal) {
+vec3 calc_lighting(vec3 normal, vec3 point) {
     vec3 col;
 
-    // key
-    float key = clamp(light_key_dir_norm.x*(-normal.x) + light_key_dir_norm.y*(-normal.y) + light_key_dir_norm.z*(-normal.z), 0.0f, 1.0f);
-    col = col + (light_key_col * object_col * light_key_power) * key;
+    for(auto &light : light_list) {
+        col = col + light.calc_light(normal, point);
+    }
 
-    // fill
-    float fill = clamp(light_fill_dir_norm.x*(-normal.x) + light_fill_dir_norm.y*(-normal.y) + light_fill_dir_norm.z*(-normal.z), 0.0f, 1.0f);
-    col = col + (light_fill_col * object_col * light_fill_power) * fill;
+    // ambient lighting
+    col = col + object_col * ambient_factor;
 
-    // back
-    float back = clamp(light_back_dir_norm.x*(-normal.x) + light_back_dir_norm.y*(-normal.y) + light_back_dir_norm.z*(-normal.z), 0.0f, 1.0f);
-    col = col + (light_back_col * object_col * light_back_power) * back;
+    // environment lighting
+    vec3 view(0, -1, 0); // placeholder for camera angle
+    float fresnel = 1.0 - std::clamp(-normal.x*view.x - normal.y*view.y - normal.z*view.z, 0.0f, 1.0f);
+    col = col + environment_col * fresnel * environment_factor;
 
     return col;
 }
@@ -100,7 +100,7 @@ vec3 cast_ray(vec3 dir) {
     for(int i = 0; i < max_ray_steps; i++) {
 
         if(dist < ray_collision_treshold) {
-            return calc_lighting(calc_normal(ray_pos));
+            return calc_lighting(calc_normal(ray_pos), ray_pos);
         }
 
         ray_pos = ray_pos + dir * dist;
@@ -108,7 +108,7 @@ vec3 cast_ray(vec3 dir) {
         dist = global_sdf(ray_pos);
     }
 
-    return background_col;
+    return environment_col;
 }
 
 
@@ -120,6 +120,7 @@ void raymarch() {
     float frame_size = 2 * tan(fov * 0.00872); // deg to rad and also divide by two
     float pixel_size = frame_size / X_res;
 
+    #pragma omp parallel for schedule(static) collapse(2)
     for(int x = 0; x < X_res; x++){
         for(int y = 0; y < Y_res; y++) {
             float x_vec = ((float)x - X_res_half) * pixel_size;

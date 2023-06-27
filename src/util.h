@@ -19,15 +19,15 @@ struct vec3 {
         return a;
     }
 
-    inline vec3 operator+(vec3 a) {
+    inline vec3 operator+(vec3 a) const {
         return vec3(a.x + x, a.y + y, a.z + z);
     }
 
-    inline vec3 operator-(vec3 a) {
+    inline vec3 operator-(vec3 a) const {
         return vec3(x - a.x, y - a.y, z - a.z);
     }
 
-    inline vec3 operator*(float a) {
+    inline vec3 operator*(float a) const {
         return vec3(x * a, y * a, z * a);
     }
 
