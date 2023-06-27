@@ -3,13 +3,11 @@
 using namespace std;
 
 
-vector<Sdf_Object*> object_list;
+vector<Sdf_Object> object_list;
 
 
 void initial_condition() {
-    // borked af
-    // Sdf_Sphere sphere(vec3(0, 0, 0), vec3(1, 1, 1));
-    // object_list.push_back(&sphere);
+    object_list.emplace_back(SPHERE, vec3(0, 0, 0), vec3(1, 1, 1));
 }
 
 

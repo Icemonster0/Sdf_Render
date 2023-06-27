@@ -17,7 +17,7 @@
 #include "object.h"
 
 // objects
-extern std::vector<Sdf_Object*> object_list;
+extern std::vector<Sdf_Object> object_list;
 
 // functions
 void render();
