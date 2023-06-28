@@ -58,7 +58,7 @@ float smooth_min(float a, float b, float k) {
 
 
 float bool_union(float asdf, float bsdf, float k) {
-    if(smooth)
+    if(k != 0)
         return smooth_min(asdf, bsdf, k);
     else
         return min(asdf, bsdf);
@@ -66,7 +66,7 @@ float bool_union(float asdf, float bsdf, float k) {
 
 
 float bool_difference(float asdf, float bsdf, float k) {
-    if(smooth)
+    if(k != 0)
         return smooth_min(asdf, -bsdf, -k);
     else
         return max(asdf, -bsdf);
@@ -74,7 +74,7 @@ float bool_difference(float asdf, float bsdf, float k) {
 
 
 float bool_intersect(float asdf, float bsdf, float k) {
-    if(smooth)
+    if(k != 0)
         return smooth_min(asdf, bsdf, -k);
     else
         return max(asdf, bsdf);
@@ -84,12 +84,18 @@ float bool_intersect(float asdf, float bsdf, float k) {
 float global_sdf(vec3 point) {
     float dist;
 
-    // float hardness = -50 * smoothness + 45;
 
-    switch(bool_type) {
-        case UNION: dist = bool_union(object_list[0].sdf(point), object_list[1].sdf(point), smoothness); break;
-        case DIFFERENCE: dist = bool_difference(object_list[0].sdf(point), object_list[1].sdf(point), smoothness); break;
-        case INTERSECT: dist = bool_intersect(object_list[0].sdf(point), object_list[1].sdf(point), smoothness); break;
+    switch(bool_type1) {
+        case UNION: dist = bool_union(object_list[0].sdf(point), object_list[1].sdf(point), smoothness1); break;
+        case DIFFERENCE: dist = bool_difference(object_list[0].sdf(point), object_list[1].sdf(point), smoothness1); break;
+        case INTERSECT: dist = bool_intersect(object_list[0].sdf(point), object_list[1].sdf(point), smoothness1); break;
+        default: std::cout << "Invalid Bool Type" << std::endl; exit(5);
+    }
+
+    switch(bool_type2) {
+        case UNION: dist = bool_union(dist, object_list[2].sdf(point), smoothness2); break;
+        case DIFFERENCE: dist = bool_difference(dist, object_list[2].sdf(point), smoothness2); break;
+        case INTERSECT: dist = bool_intersect(dist, object_list[2].sdf(point), smoothness2); break;
         default: std::cout << "Invalid Bool Type" << std::endl; exit(5);
     }
 

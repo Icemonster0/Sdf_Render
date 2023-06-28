@@ -49,6 +49,7 @@ public:
         switch(type) {
             case SPHERE: dist = sphere_sdf(point); break;
             case CUBE: dist = cube_sdf(point); break;
+            case CYLINDER: dist = cylinder_sdf(point); break;
             default: std::cout << "Invalid Sdf Type" << std::endl; exit(2);
         }
 
@@ -63,9 +64,14 @@ private:
     }
 
     float cube_sdf(vec3 point) {
-        vec3 q = vec3(abs(point.x), abs(point.y), abs(point.z)) - scale / 2;
+        vec3 q = point.absolute() - 0.5f;
         vec3 r = vec3(max(q.x,0.0f), max(q.y,0.0f), max(q.z,0.0f));
         float l = sqrtf(r.x*r.x + r.y*r.y + r.z*r.z);
         return l + min(max(q.x,max(q.y,q.z)),0.0f);
+    }
+
+    float cylinder_sdf(vec3 point) {
+        vec3 d(vec3(hypotf(point.x, point.y), point.z, 0).absolute() - vec3(0.5, 0.5, 0));
+        return min(max(d.x,d.y),0.0f) + hypotf(max(d.x,0.0f),max(d.y,0.0f));
     }
 };

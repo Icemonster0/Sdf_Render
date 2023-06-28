@@ -19,8 +19,16 @@ struct vec3 {
         return a;
     }
 
+    inline vec3 operator+(float a) const {
+        return vec3(x + a, y + a, z + a);
+    }
+
     inline vec3 operator+(vec3 a) const {
         return vec3(a.x + x, a.y + y, a.z + z);
+    }
+
+    inline vec3 operator-(float a) const {
+        return vec3(x - a, y - a, z - a);
     }
 
     inline vec3 operator-(vec3 a) const {
@@ -42,34 +50,8 @@ struct vec3 {
     inline vec3 operator/(vec3 a) const {
         return vec3(x / a.x, y / a.y, z / a.z);
     }
-};
 
-
-struct vec2 {
-    float x;
-    float y;
-
-    vec2() : x(0), y(0) {
-    }
-
-    vec2(float px, float py) : x(px), y(py) {
-    }
-
-    inline vec2 operator=(vec2 a) {
-        x = a.x;
-        y = a.y;
-        return a;
-    }
-
-    inline vec2 operator+(vec2 a) {
-        return vec2(a.x + x, a.y + y);
-    }
-
-    inline vec2 operator-(vec2 a) {
-        return vec2(x - a.x, y - a.y);
-    }
-
-    inline vec2 operator*(float a) {
-        return vec2(x * a, y * a);
+    vec3 absolute() {
+        return vec3(std::abs(x), std::abs(y), std::abs(z));
     }
 };

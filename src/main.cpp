@@ -10,6 +10,7 @@ vector<Light> light_list;
 void initial_condition() {
     object_list.emplace_back(obj1_type, obj1_pos, obj1_scale, obj1_rot);
     object_list.emplace_back(obj2_type, obj2_pos, obj2_scale, obj2_rot);
+    object_list.emplace_back(obj3_type, obj3_pos, obj3_scale, obj3_rot);
 
     light_list.emplace_back(DIR, vec3(0, 0, 0), light_key_dir, light_key_col, light_key_power);
     light_list.emplace_back(DIR, vec3(0, 0, 0), light_fill_dir, light_fill_col, light_fill_power);

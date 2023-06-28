@@ -17,27 +17,34 @@
     const float roughness = 0.7; // 0 to 1
 
     // Objects
-    const vec3 object_col = vec3(0.9, 0.2, 0.1);
+    const vec3 object_col = vec3(0.2, 0.3, 0.9);
 
-    enum Sdf_Type {SPHERE, CUBE}; // object types
+    enum Sdf_Type {SPHERE, CUBE, CYLINDER}; // object types
+    enum Bool_Type {UNION, DIFFERENCE, INTERSECT}; // ways to combine two objects
 
-    const Sdf_Type obj1_type = CUBE;
+    const Sdf_Type obj1_type = SPHERE;
     const vec3 obj1_pos = vec3(0, 0, 0);
-    const vec3 obj1_scale = vec3(0.9, 0.9, 0.9);
-    const vec3 obj1_rot = vec3(-0.3, 0.1, 0.5);
+    const vec3 obj1_scale = vec3(1, 1, 1);
+    const vec3 obj1_rot = vec3(0, 0, 0);
 
-    enum Bool_Type {UNION, DIFFERENCE, INTERSECT}; // ways to combine obj1 and obj2
-    const Bool_Type bool_type = INTERSECT;
-    const bool smooth = true;
-    const float smoothness = 0.01; // 0 to 1
+        const Bool_Type bool_type1 = DIFFERENCE;
+        const float smoothness1 = 0.01; // 0 to 1
 
     const Sdf_Type obj2_type = SPHERE;
-    const vec3 obj2_pos = vec3(0, 0, 0);
-    const vec3 obj2_scale = vec3(1.1, 1.1, 1.1);
+    const vec3 obj2_pos = vec3(0.5, 0.5, -0.1);
+    const vec3 obj2_scale = vec3(1, 1, 0.3);
     const vec3 obj2_rot = vec3(0, 0, 0);
 
+        const Bool_Type bool_type2 = UNION;
+        const float smoothness2 = 0.1; // 0 to 1
+
+    const Sdf_Type obj3_type = CYLINDER;
+    const vec3 obj3_pos = vec3(0, 0, -1);
+    const vec3 obj3_scale = vec3(0.4, 0.4, 1);
+    const vec3 obj3_rot = vec3(0, 0, 0);
+
     // Lighing
-    const vec3 environment_col = vec3(0.75, 0.5, 0.35);
+    const vec3 environment_col = vec3(0.4, 0.8, 0.6);
 
     const bool enable_lights = true;
 
@@ -63,7 +70,7 @@
     // General
     const int X_res = 1200;
     const int Y_res = 900;
-    const std::string output_path = "output/image7.pnm";
+    const std::string output_path = "output/image8.pnm";
 
     // Raymarching
     const float ray_collision_treshold = 0.001;
