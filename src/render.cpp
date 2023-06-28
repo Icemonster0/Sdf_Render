@@ -41,23 +41,59 @@ void print_pnm() {
 
 
 void clear_frame() {
-    for(int x = 0; x < X_res; x++)
-        for(int y = 0; y < Y_res; y++)
+    for(int x = 0; x < X_res; x++) {
+        for(int y = 0; y < Y_res; y++) {
             frame[x][y] = environment_col;
+        }
+    }
+}
+
+
+float smooth_min(float a, float b, float k) {
+    // float h = max(k - abs(a - b), 0.0f) / k;
+    // return min(a, b) - h*h*h*k*1/6.0;
+    float h = clamp(0.5 + 0.5*(a-b)/k, 0.0, 1.0);
+    return lerp(a, b, h) - k*h*(1.0-h);
+}
+
+
+float bool_union(float asdf, float bsdf, float k) {
+    if(smooth)
+        return smooth_min(asdf, bsdf, k);
+    else
+        return min(asdf, bsdf);
+}
+
+
+float bool_difference(float asdf, float bsdf, float k) {
+    if(smooth)
+        return smooth_min(asdf, -bsdf, -k);
+    else
+        return max(asdf, -bsdf);
+}
+
+
+float bool_intersect(float asdf, float bsdf, float k) {
+    if(smooth)
+        return smooth_min(asdf, bsdf, -k);
+    else
+        return max(asdf, bsdf);
 }
 
 
 float global_sdf(vec3 point) {
-    float min_dist = object_list[0].sdf(point);
+    float dist;
 
-    for(int i = 1; i < object_list.size(); i++) {
-        float dist = object_list[i].sdf(point);
+    // float hardness = -50 * smoothness + 45;
 
-        if(dist < min_dist)
-            min_dist = dist;
+    switch(bool_type) {
+        case UNION: dist = bool_union(object_list[0].sdf(point), object_list[1].sdf(point), smoothness); break;
+        case DIFFERENCE: dist = bool_difference(object_list[0].sdf(point), object_list[1].sdf(point), smoothness); break;
+        case INTERSECT: dist = bool_intersect(object_list[0].sdf(point), object_list[1].sdf(point), smoothness); break;
+        default: std::cout << "Invalid Bool Type" << std::endl; exit(5);
     }
 
-    return min_dist;
+    return dist;
 }
 
 
@@ -77,8 +113,10 @@ vec3 calc_normal(vec3 p) {
 vec3 calc_lighting(vec3 normal, vec3 point) {
     vec3 col;
 
-    for(auto &light : light_list) {
-        col = col + light.calc_light(normal, point);
+    if(enable_lights) {
+        for(auto &light : light_list) {
+            col = col + light.calc_light(normal, point);
+        }
     }
 
     // ambient lighting

@@ -3,7 +3,7 @@
 #include "util.h"
 
 
-enum Light_Type {DIR, POINT};
+// enum Light_Type {DIR, POINT};
 
 
 class Light {

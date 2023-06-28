@@ -38,6 +38,10 @@ struct vec3 {
     inline vec3 operator/(float a) const {
         return vec3(x / a, y / a, z / a);
     }
+
+    inline vec3 operator/(vec3 a) const {
+        return vec3(x / a.x, y / a.y, z / a.z);
+    }
 };
 
 
