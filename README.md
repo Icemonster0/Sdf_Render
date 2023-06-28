@@ -1,4 +1,4 @@
-# Sdf_Render
+# Sdf Render
 A simple signed distance field based renderer.
 
 ---
@@ -18,4 +18,5 @@ A simple signed distance field based renderer.
 ---
 
 ### Running
-Configure the shader by editing `src/settings.h` and run compile.sh or its equivalent on your system to generate the executable.
+You can configure the shader by editing `src/settings.h`.
+Create an `output` directory and run `compile.sh` or its equivalent on your system to generate the executable.
