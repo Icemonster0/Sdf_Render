@@ -16,10 +16,10 @@ public:
     vec3 pos;
     vec3 scale;
     vec3 rot;
-    bool hide;
+    bool enable;
 
-    Sdf_Object(Sdf_Type ptype, Bool_Type pbool_type, float pbool_smooth, vec3 ppos, vec3 pscale, vec3 prot, bool phide)
-        : type(ptype), bool_type(pbool_type), bool_smooth(pbool_smooth), pos(ppos), scale(pscale), rot(prot), hide(phide) {
+    Sdf_Object(Sdf_Type ptype, Bool_Type pbool_type, float pbool_smooth, vec3 ppos, vec3 pscale, vec3 prot, bool penable)
+        : type(ptype), bool_type(pbool_type), bool_smooth(pbool_smooth), pos(ppos), scale(pscale), rot(prot), enable(penable) {
     }
 
     vec3 transform(vec3 point) {

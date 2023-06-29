@@ -6,9 +6,9 @@
 // Scene -----------------------------------------------------------------------
 
     // Camera
-    const vec3 cam_pos = vec3(1.5, 3, -1.5);
-    const vec3 cam_rot = vec3(-20, -10, -26); // execution order: y(roll), x(pitch), z(pan)
-    const float fov = 60;
+    const vec3 cam_pos = vec3(0, 5, 0);
+    const vec3 cam_rot = vec3(0, 0, 0); // execution order: y(roll), x(pitch), z(pan)
+    const float fov = 30;
 
 
     // Shader
@@ -38,7 +38,7 @@
     const vec3 obj2_pos = vec3(0.5, 0.5, -0.2);
     const vec3 obj2_scale = vec3(1, 1, 0.3);
     const vec3 obj2_rot = vec3(20, 0, 45);
-    const bool obj2_hide = false;
+    const bool obj2_enable = true;
 
         const Bool_Type bool_type3 = UNION; // How to combine obj1,2 and obj3
         const float smoothness3 = 0.15; // 0 to 1
@@ -47,7 +47,7 @@
     const vec3 obj3_pos = vec3(0, 0, -2.4);
     const vec3 obj3_scale = vec3(0.4, 0.4, 4);
     const vec3 obj3_rot = vec3(0, 0, 0);
-    const bool obj3_hide = false;
+    const bool obj3_enable = true;
 
 
     // Lighing
@@ -55,24 +55,24 @@
 
     enum Light_Type {DIR, POINT}; // light types
 
-    const Light_Type light_key_type = DIR;
-    const vec3 light_key_dir = vec3(-1, -0.5, -0.4); // if DIR light
-    const vec3 light_key_pos = vec3(0, 0, 0); // if POINT light
+    const Light_Type light_key_type = POINT;
+    const vec3 light_key_dir = vec3(-1, -0.5, -0.4); // if DIR light; can never be zero
+    const vec3 light_key_pos = vec3(2, 2, 1); // if POINT light
     const float light_key_power = 1;
     const vec3 light_key_col = vec3(1, 1, 0.9);
     const bool light_key_enable = true;
 
-    const Light_Type light_fill_type = DIR;
-    const vec3 light_fill_dir = vec3(0.5, -0.5, 0); // if DIR light
-    const vec3 light_fill_pos = vec3(0, 0, 0); // if POINT light
+    const Light_Type light_fill_type = POINT;
+    const vec3 light_fill_dir = vec3(0.5, -0.5, 0); // if DIR light; can never be zero
+    const vec3 light_fill_pos = vec3(-2, 2, 0); // if POINT light
     const float light_fill_power = 0.3;
     const vec3 light_fill_col = vec3(0.9, 0.9, 1);
     const bool light_fill_enable = true;
 
-    const Light_Type light_back_type = DIR;
-    const vec3 light_back_dir = vec3(0.7, 0.7, -0.5); // if DIR light
-    const vec3 light_back_pos = vec3(0, 0, 0); // if POINT light
-    const float light_back_power = 4;
+    const Light_Type light_back_type = POINT;
+    const vec3 light_back_dir = vec3(0.7, 0.7, -0.5); // if DIR light; can never be zero
+    const vec3 light_back_pos = vec3(-2, -2, 2); // if POINT light
+    const float light_back_power = 2;
     const vec3 light_back_col = vec3(0.4, 0.5, 1);
     const bool light_back_enable = true;
 

@@ -83,7 +83,7 @@ float global_sdf(vec3 point) {
     dist = object_list[0].sdf(point);
 
     for(int i = 1; i < object_list.size(); i++) {
-        if(!object_list[i].hide) {
+        if(object_list[i].enable) {
             switch(object_list[i].bool_type) {
                 case UNION: dist = bool_union(dist, object_list[i].sdf(point), object_list[i].bool_smooth); break;
                 case DIFFERENCE: dist = bool_difference(dist, object_list[i].sdf(point), object_list[i].bool_smooth); break;
