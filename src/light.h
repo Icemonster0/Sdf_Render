@@ -13,21 +13,22 @@ public:
     vec3 dir;
     vec3 color;
     float power;
+    bool enable;
 
-    Light(Light_Type ptype, vec3 ppos, vec3 pdir, vec3 pcolor, float ppower) : type(ptype), pos(ppos), dir(pdir), color(pcolor), power(ppower) {
+    Light(Light_Type ptype, vec3 ppos, vec3 pdir, vec3 pcolor, float ppower, bool penable)
+        : type(ptype), pos(ppos), dir(pdir), color(pcolor), power(ppower), enable(penable) {
         dir = dir / sqrtf(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z);
     }
-
-    // Light(Light_Type ptype, vec3 ppos, vec3 pcolor, float ppower) : type(ptype), pos(ppos), dir(vec3(0, 0, 0)), color(pcolor), power(ppower) {
-    // }
 
     vec3 calc_light(vec3 normal, vec3 point) {
         vec3 col;
 
-        switch(type) {
-            case DIR: col = calc_dir_light(normal); break;
-            case POINT: col = calc_point_light(normal, point); break;
-            default: std::cout << "Invalid Light Type" << std::endl; exit(4);
+        if(enable) {
+            switch(type) {
+                case DIR: col = calc_dir_light(normal); break;
+                case POINT: col = calc_point_light(normal, point); break;
+                default: std::cout << "Invalid Light Type" << std::endl; exit(4);
+            }
         }
 
         return col;

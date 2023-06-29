@@ -5,10 +5,6 @@ using namespace std;
 
 vec3 frame[X_res][Y_res];
 
-vec3 light_key_dir_norm = light_key_dir / sqrtf(light_key_dir.x*light_key_dir.x + light_key_dir.y*light_key_dir.y + light_key_dir.z*light_key_dir.z);
-vec3 light_fill_dir_norm = light_fill_dir / sqrtf(light_fill_dir.x*light_fill_dir.x + light_fill_dir.y*light_fill_dir.y + light_fill_dir.z*light_fill_dir.z);
-vec3 light_back_dir_norm = light_back_dir / sqrtf(light_back_dir.x*light_back_dir.x + light_back_dir.y*light_back_dir.y + light_back_dir.z*light_back_dir.z);
-
 
 void print_pnm() {
     ofstream file;
@@ -84,19 +80,17 @@ float bool_intersect(float asdf, float bsdf, float k) {
 float global_sdf(vec3 point) {
     float dist;
 
+    dist = object_list[0].sdf(point);
 
-    switch(bool_type1) {
-        case UNION: dist = bool_union(object_list[0].sdf(point), object_list[1].sdf(point), smoothness1); break;
-        case DIFFERENCE: dist = bool_difference(object_list[0].sdf(point), object_list[1].sdf(point), smoothness1); break;
-        case INTERSECT: dist = bool_intersect(object_list[0].sdf(point), object_list[1].sdf(point), smoothness1); break;
-        default: std::cout << "Invalid Bool Type" << std::endl; exit(5);
-    }
-
-    switch(bool_type2) {
-        case UNION: dist = bool_union(dist, object_list[2].sdf(point), smoothness2); break;
-        case DIFFERENCE: dist = bool_difference(dist, object_list[2].sdf(point), smoothness2); break;
-        case INTERSECT: dist = bool_intersect(dist, object_list[2].sdf(point), smoothness2); break;
-        default: std::cout << "Invalid Bool Type" << std::endl; exit(5);
+    for(int i = 1; i < object_list.size(); i++) {
+        if(!object_list[i].hide) {
+            switch(object_list[i].bool_type) {
+                case UNION: dist = bool_union(dist, object_list[i].sdf(point), object_list[i].bool_smooth); break;
+                case DIFFERENCE: dist = bool_difference(dist, object_list[i].sdf(point), object_list[i].bool_smooth); break;
+                case INTERSECT: dist = bool_intersect(dist, object_list[i].sdf(point), object_list[i].bool_smooth); break;
+                default: std::cout << "Bool Type " << i+1 << " Invalid" << std::endl; exit(5);
+            }
+        }
     }
 
     return dist;
@@ -119,10 +113,8 @@ vec3 calc_normal(vec3 p) {
 vec3 calc_lighting(vec3 normal, vec3 point) {
     vec3 col;
 
-    if(enable_lights) {
-        for(auto &light : light_list) {
-            col = col + light.calc_light(normal, point);
-        }
+    for(auto &light : light_list) {
+        col = col + light.calc_light(normal, point);
     }
 
     // ambient lighting
@@ -156,12 +148,13 @@ vec3 cast_ray(vec3 dir) {
 }
 
 
+
 void raymarch() {
     float X_res_half = X_res / 2;
     float Y_res_half = Y_res / 2;
     float fov_half = fov / 2;
 
-    float frame_size = 2 * tan(fov * 0.00872); // deg to rad and also divide by two
+    float frame_size = 2 * tan(fov * 0.00872664625); // deg to rad and also divide by two
     float pixel_size = frame_size / X_res;
 
     #pragma omp parallel for schedule(static) collapse(2)
@@ -172,14 +165,9 @@ void raymarch() {
 
             vec3 dir(x_vec, -1, y_vec);
 
-            // cout << dir.z << endl;
-            // cout << sqrtf(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z) << " ";
             dir = dir / sqrtf(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z);
-            // cout << sqrtf(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z) << endl;
 
-            // cout << dir.x << " " << dir.y << " " << dir.z << endl;
-
-            // vec3 dir(0, -1, 0);
+            dir = dir.rotate(cam_rot);
 
             frame[x][y] = cast_ray(dir);
         }

@@ -54,4 +54,23 @@ struct vec3 {
     vec3 absolute() {
         return vec3(std::abs(x), std::abs(y), std::abs(z));
     }
+
+    vec3 rotate(vec3 rot) {
+        vec3 rot_rad = rot * 0.01745329251; // deg to rad
+        vec3 vec = vec3(x, y, z);
+        //  y-axis
+        vec3 rot_tmp = vec;
+        vec.x = rot_tmp.x * cos(rot_rad.y) - rot_tmp.z * sin(rot_rad.y);
+        vec.z = rot_tmp.x * sin(rot_rad.y) + rot_tmp.z * cos(rot_rad.y);
+        //  x-axis
+        rot_tmp = vec;
+        vec.y = rot_tmp.y * cos(rot_rad.x) - rot_tmp.z * sin(rot_rad.x);
+        vec.z = rot_tmp.y * sin(rot_rad.x) + rot_tmp.z * cos(rot_rad.x);
+        //  z-axis
+        rot_tmp = vec;
+        vec.x = rot_tmp.x * cos(rot_rad.z) - rot_tmp.y * sin(rot_rad.z);
+        vec.y = rot_tmp.x * sin(rot_rad.z) + rot_tmp.y * cos(rot_rad.z);
+
+        return vec;
+    }
 };

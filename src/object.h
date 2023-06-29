@@ -11,33 +11,38 @@ class Sdf_Object {
 public:
 
     Sdf_Type type;
+    Bool_Type bool_type;
+    float bool_smooth;
     vec3 pos;
     vec3 scale;
     vec3 rot;
+    bool hide;
 
-    Sdf_Object(Sdf_Type ptype, vec3 ppos, vec3 pscale, vec3 prot) : type(ptype), pos(ppos), scale(pscale), rot(prot) {
+    Sdf_Object(Sdf_Type ptype, Bool_Type pbool_type, float pbool_smooth, vec3 ppos, vec3 pscale, vec3 prot, bool phide)
+        : type(ptype), bool_type(pbool_type), bool_smooth(pbool_smooth), pos(ppos), scale(pscale), rot(prot), hide(phide) {
     }
 
     vec3 transform(vec3 point) {
+        // translate
+        point = point - pos;
+
         //rotate
-        //  x-axis
+        vec3 rot_rad = rot * 0.01745329251; // deg to rad
+        //  z-axis
         vec3 rot_tmp = point;
-        point.y = rot_tmp.y * cos(rot.x) - rot_tmp.z * sin(rot.x);
-        point.z = rot_tmp.y * sin(rot.x) + rot_tmp.z * cos(rot.x);
+        point.x = rot_tmp.x * cos(rot_rad.z) - rot_tmp.y * sin(rot_rad.z);
+        point.y = rot_tmp.x * sin(rot_rad.z) + rot_tmp.y * cos(rot_rad.z);
+        //  x-axis
+        rot_tmp = point;
+        point.y = rot_tmp.y * cos(rot_rad.x) - rot_tmp.z * sin(rot_rad.x);
+        point.z = rot_tmp.y * sin(rot_rad.x) + rot_tmp.z * cos(rot_rad.x);
         //  y-axis
         rot_tmp = point;
-        point.x = rot_tmp.x * cos(rot.y) - rot_tmp.z * sin(rot.y);
-        point.z = rot_tmp.x * sin(rot.y) + rot_tmp.z * cos(rot.y);
-        //  z-axis
-        rot_tmp = point;
-        point.x = rot_tmp.x * cos(rot.z) - rot_tmp.y * sin(rot.z);
-        point.y = rot_tmp.x * sin(rot.z) + rot_tmp.y * cos(rot.z);
+        point.x = rot_tmp.x * cos(rot_rad.y) - rot_tmp.z * sin(rot_rad.y);
+        point.z = rot_tmp.x * sin(rot_rad.y) + rot_tmp.z * cos(rot_rad.y);
 
         // scale
         point = point / scale;
-
-        // translate
-        point = point - pos;
 
         return point;
     }
