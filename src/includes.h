@@ -13,6 +13,10 @@
 // settings
 #include "settings.h"
 
+// functions
+void render();
+float global_sdf(vec3 point);
+
 // classes
 #include "object.h"
 #include "light.h"
@@ -20,6 +24,3 @@
 // objects
 extern std::vector<Sdf_Object> object_list;
 extern std::vector<Light> light_list;
-
-// functions
-void render();

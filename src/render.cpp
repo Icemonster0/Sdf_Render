@@ -121,7 +121,7 @@ vec3 calc_lighting(vec3 normal, vec3 point) {
     col = col + object_col * ambient_factor;
 
     // environment lighting
-    vec3 view(0, -1, 0); // placeholder for camera angle
+    vec3 view = vec3(0, -1, 0).rotate(cam_rot);
     float fresnel = 1.0 - std::clamp(-normal.x*view.x - normal.y*view.y - normal.z*view.z, 0.0f, 1.0f);
     col = col + environment_col * fresnel * environment_factor;
 

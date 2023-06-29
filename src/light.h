@@ -2,7 +2,7 @@
 
 #include "vec3.h"
 
-
+using namespace std;
 // enum Light_Type {DIR, POINT};
 
 
@@ -27,7 +27,7 @@ public:
             switch(type) {
                 case DIR: col = calc_dir_light(normal, point); break;
                 case POINT: col = calc_point_light(normal, point); break;
-                default: std::cout << "Invalid Light Type" << std::endl; exit(4);
+                default: cout << "Invalid Light Type" << endl; exit(4);
             }
         }
 
@@ -48,17 +48,58 @@ private:
 
         // diffuse
         col = col + object_col * color * power
-            * std::max(-normal.x*light.x - normal.y*light.y - normal.z*light.z, 0.0f)
+            * max(-normal.x*light.x - normal.y*light.y - normal.z*light.z, 0.0f)
             * (roughness * 0.7 + 0.3) // decrease diffuse amount with shininess
             * diffuse_factor;
 
         // specular
         col = col + color * power
-            * powf(std::max(-normal.x*H_vec.x - normal.y*H_vec.y - normal.z*H_vec.z, 0.0f), std::pow(4000.0, 1.0 - roughness))
-            * (std::pow(4.0, 1.0 - roughness) - 1.0) // increse specular amount with shininess
+            * powf(max(-normal.x*H_vec.x - normal.y*H_vec.y - normal.z*H_vec.z, 0.0f), pow(4000.0, 1.0 - roughness))
+            * (pow(4.0, 1.0 - roughness) - 1.0) // increse specular amount with shininess
             * specular_factor;
 
+
+        if(shadows) {
+            col = col * cast_shadow_ray(light * -1, point);
+        }
+
         return col;
+    }
+
+    float cast_shadow_ray(vec3 dir, vec3 point) {
+        vec3 ray_pos = point;
+        float dist;
+        float min_dist;
+
+        // So that the soft shadow doesnt detect the surface the shadow is to be cast on:
+        ray_pos = ray_pos + dir * max(shadow_softness, ray_collision_treshold);
+
+        for(int i = 0; i < max_shadow_ray_steps; i++) {
+            // cout << dist << endl;
+            dist = global_sdf(ray_pos);
+            if(type == POINT) {
+                // cout << "?";
+                float light_dist = (ray_pos-pos).length();
+                // cout << light_dist << endl;
+                dist = min(dist, light_dist);
+                if(light_dist < shadow_softness) {
+                    // cout << "X";
+                    return clamp(min_dist / shadow_softness, 0.0f, 1.0f);
+                }
+            }
+
+            if(dist < shadow_softness && dist < min_dist) {
+                min_dist = dist;
+            }
+            if(dist < ray_collision_treshold) {
+                // cout << "X";
+                return 0;
+            }
+
+            ray_pos = ray_pos + dir * dist;
+        }
+        cout << " ";
+        return clamp(min_dist / shadow_softness, 0.0f, 1.0f);
     }
 
     vec3 calc_dir_light(vec3 normal, vec3 point) {
@@ -78,6 +119,5 @@ private:
         col = col / (light_length*light_length) * 5.0;
 
         return col;
-        return vec3();
     }
 };
