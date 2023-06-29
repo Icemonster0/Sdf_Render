@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util.h"
+#include "vec3.h"
 
 using namespace std;
 
@@ -55,6 +55,7 @@ public:
             case SPHERE: dist = sphere_sdf(point); break;
             case CUBE: dist = cube_sdf(point); break;
             case CYLINDER: dist = cylinder_sdf(point); break;
+            case FLOOR: dist = floor_sdf(point); break;
             default: std::cout << "Invalid Sdf Type" << std::endl; exit(2);
         }
 
@@ -78,5 +79,9 @@ private:
     float cylinder_sdf(vec3 point) {
         vec3 d(vec3(hypotf(point.x, point.y), point.z, 0).absolute() - vec3(0.5, 0.5, 0));
         return min(max(d.x,d.y),0.0f) + hypotf(max(d.x,0.0f),max(d.y,0.0f));
+    }
+
+    float floor_sdf(vec3 point) {
+        return point.z;
     }
 };

@@ -8,7 +8,7 @@
 #include <string>
 
 // util
-#include "util.h"
+#include "vec3.h"
 
 // settings
 #include "settings.h"

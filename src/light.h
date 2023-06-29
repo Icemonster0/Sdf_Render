@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util.h"
+#include "vec3.h"
 
 
 // enum Light_Type {DIR, POINT};
@@ -66,29 +66,6 @@ private:
 
         return col;
     }
-
-    // vec3 calc_dir_light(vec3 normal) {
-    //     // Using Blinn-Phong method
-    //     vec3 view = vec3(0, -1, 0).rotate(cam_rot);
-    //     vec3 H_vec = (dir + view) / 2; // Blinn's simplification
-    //     H_vec = H_vec / sqrtf(H_vec.x*H_vec.x + H_vec.y*H_vec.y + H_vec.z*H_vec.z);
-    //
-    //     vec3 col;
-    //
-    //     // diffuse
-    //     col = col + object_col * color * power
-    //         * std::max(-normal.x*dir.x - normal.y*dir.y - normal.z*dir.z, 0.0f)
-    //         * (roughness * 0.7 + 0.3) // decrease diffuse amount with shininess
-    //         * diffuse_factor;
-    //
-    //     // specular
-    //     col = col + color * power
-    //         * powf(std::max(-normal.x*H_vec.x - normal.y*H_vec.y - normal.z*H_vec.z, 0.0f), std::pow(4000.0, 1.0 - roughness))
-    //         * (std::pow(4.0, 1.0 - roughness) - 1.0) // increse specular amount with shininess
-    //         * specular_factor;
-    //
-    //     return col;
-    // }
 
     vec3 calc_point_light(vec3 normal, vec3 point) {
         vec3 light_dir = point - pos;

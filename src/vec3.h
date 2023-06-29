@@ -51,7 +51,7 @@ struct vec3 {
         return vec3(x / a.x, y / a.y, z / a.z);
     }
 
-    vec3 absolute() {
+    inline vec3 absolute() {
         return vec3(std::abs(x), std::abs(y), std::abs(z));
     }
 
@@ -72,5 +72,9 @@ struct vec3 {
         vec.y = rot_tmp.x * sin(rot_rad.z) + rot_tmp.y * cos(rot_rad.z);
 
         return vec;
+    }
+
+    inline vec3 blend(vec3 vec, float fac) {
+        return vec3(std::lerp(x, vec.x, fac), std::lerp(y, vec.y, fac), std::lerp(z, vec.z, fac));
     }
 };

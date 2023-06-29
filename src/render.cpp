@@ -131,22 +131,29 @@ vec3 calc_lighting(vec3 normal, vec3 point) {
 
 vec3 cast_ray(vec3 dir) {
     vec3 ray_pos = cam_pos;
-    float dist = global_sdf(ray_pos);
+    float dist;
+    float ray_length = 0;
 
     for(int i = 0; i < max_ray_steps; i++) {
 
-        if(dist < ray_collision_treshold) {
-            return calc_lighting(calc_normal(ray_pos), ray_pos);
+        dist = global_sdf(ray_pos);
+        ray_length += dist;
+
+        if(dist < 0) {
+            return vec3(0, 0, 0);
+        }
+        else if(dist < ray_collision_treshold) {
+            vec3 col = calc_lighting(calc_normal(ray_pos), ray_pos);
+            if(fog)
+                col = col.blend(environment_col, clamp(ray_length / fog_dist, 0.0f, 1.0f));
+            return col;
         }
 
         ray_pos = ray_pos + dir * dist;
-
-        dist = global_sdf(ray_pos);
     }
 
     return environment_col;
 }
-
 
 
 void raymarch() {
