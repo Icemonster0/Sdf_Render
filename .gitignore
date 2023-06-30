@@ -1,2 +1,4 @@
 /output
+!/output/example1.pnm
+!/output/example2.pnm
 /run

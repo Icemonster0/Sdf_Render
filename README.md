@@ -12,7 +12,7 @@ A simple signed distance field based renderer.
 
 ### Requirements
 - C++17 or later
-- Tested on Linux, should probably work on other OSs as well?
+- Tested on Linux, should probably work on other OSs as well
 - Ability to display or convert pnm image files
 
 ---

@@ -5,10 +5,13 @@
 
 // Scene -----------------------------------------------------------------------
 
+    const bool import_scene = true;
+    const std::string scene_path = "scenes/example2.sdfscene";
+
     // Camera
-    const vec3 cam_pos = vec3(0, 3, 0);
-    const vec3 cam_rot = vec3(0, 0, 0); // execution order: y(roll), x(pitch), z(pan)
-    const float fov = 70;
+    const vec3 camera_pos = vec3(0, 3, 0);
+    const vec3 camera_rot = vec3(0, 0, 0); // execution order: y(roll), x(pitch), z(pan)
+    const float camera_fov = 70;
 
 
     // Objects

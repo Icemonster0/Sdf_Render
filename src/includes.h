@@ -6,12 +6,18 @@
 #include <algorithm>
 #include <fstream>
 #include <string>
+#include <unistd.h>
 
 // util
 #include "vec3.h"
 
 // settings
 #include "settings.h"
+
+// variables
+extern vec3 cam_pos;
+extern vec3 cam_rot;
+extern float fov;
 
 // functions
 void render();

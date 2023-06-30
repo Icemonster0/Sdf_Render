@@ -7,6 +7,8 @@ vec3 frame[X_res][Y_res];
 
 
 void print_pnm() {
+    cout << "Saving image..." << endl;
+
     ofstream file;
     file.open(output_path);
 
@@ -184,6 +186,8 @@ void raymarch() {
 
 
 void render() {
+    cout << "Rendering..." << endl;
+
     clear_frame();
     raymarch();
     print_pnm();
