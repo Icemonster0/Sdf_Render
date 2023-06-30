@@ -1,6 +1,8 @@
 # Sdf Render
 A simple signed distance field based renderer.
 
+![Example Render](/output/example2.pnm)
+
 ---
 
 ### Features
