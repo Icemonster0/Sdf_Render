@@ -11,7 +11,7 @@ void print_pnm() {
     file.open(output_path);
 
     if(!file.is_open()) {
-        cout << "Failed to open file " << output_path << endl;
+        cout << "Failed to open file " << output_path << ". Does the path exist?" << endl;
         exit(3);
     }
 
@@ -49,7 +49,8 @@ float smooth_min(float a, float b, float k) {
     // float h = max(k - abs(a - b), 0.0f) / k;
     // return min(a, b) - h*h*h*k*1/6.0;
     float h = clamp(0.5 + 0.5*(a-b)/k, 0.0, 1.0);
-    return lerp(a, b, h) - k*h*(1.0-h);
+    float l = a + (b - a) * h;
+    return l - k*h*(1.0-h);
 }
 
 

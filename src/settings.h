@@ -12,7 +12,7 @@
 
 
     // Objects
-    const vec3 object_col = vec3(1.0, 0.85, 1.0);
+    const vec3 object_col = vec3(1.0, 0.2, 0.1);
     const float roughness = 0.7; // 0 to 1
 
     enum Sdf_Type {SPHERE, CUBE, CYLINDER, FLOOR}; // object types
@@ -43,7 +43,7 @@
 
 
     // Lighing
-    const vec3 environment_col = vec3(0.25, 0.1, 0.4);
+    const vec3 environment_col = vec3(0.5, 0.8, 1.0);
 
     enum Light_Type {DIR, POINT}; // light types
 
@@ -75,7 +75,7 @@
     // General
     const int X_res = 1200;
     const int Y_res = 900;
-    const std::string output_path = "output/image10.pnm";
+    const std::string output_path = "output/image11.pnm";
 
 
     // Shader
@@ -89,7 +89,7 @@
     const bool fog = true;
     const float fog_dist = 40;
 
-    const bool shadows = true;
+    const bool shadows = false; // *very* broken, do not recommend
     const float shadow_softness = 0.1;
     const float max_shadow_ray_steps = 100;
 

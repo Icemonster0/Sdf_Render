@@ -75,7 +75,7 @@ struct vec3 {
     }
 
     inline vec3 blend(vec3 vec, float fac) {
-        return vec3(std::lerp(x, vec.x, fac), std::lerp(y, vec.y, fac), std::lerp(z, vec.z, fac));
+        return vec3(x + (vec.x - x) * fac, y + (vec.y - y) * fac, z + (vec.z - z) * fac);
     }
 
     inline float length() {
