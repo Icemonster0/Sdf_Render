@@ -8,7 +8,7 @@ There are currently barely any error messages regarding the syntax, but if it th
 ---
 
 ### General syntax
-`Key: parameter1 | parameter2 | parameter3`...  
+`Key: parameter1 | parameter2 | parameter3` ...  
 
 ### Comments
 Lines starting with a `#` are ignored.
