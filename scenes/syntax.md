@@ -1,6 +1,6 @@
 # Syntax of .sdfscene files
 
-Here you can see the syntax the .sdfscene files use. See the other files in this directory for examples. If you load a .sdfscene file, it will replace the *Camera*, *Objects* and *Lighting* sections in `src/settings.h`.
+Here you can see the syntax the .sdfscene files use. See the other files in this directory for examples. If you load a .sdfscene file, it will replace the *Camera*, *Objects* and *Lighting* sections in `src/settings.h`.  
 Key characters are **case-sensitive**!  
 If a parameter has multiple elements, write them separated by spaces: a b c (not a, b, c)  
 There are currently barely any error messages regarding the syntax, but if it throws a segmentation fault, gets stuck or does something else weird it's probably a mistake in the scene file. You can use the terminal output to figure out roughly where the problem was.
