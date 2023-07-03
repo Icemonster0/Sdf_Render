@@ -123,7 +123,7 @@ void load_scene() {
                       p[2][0], true); // pow
                       cout << " Loaded Directional Light" << endl;
                       break;
-            case 'p': light_list.emplace_back(DIR, vec3(p[0][0], p[0][1], p[0][2]), // pos
+            case 'p': light_list.emplace_back(POINT, vec3(p[0][0], p[0][1], p[0][2]), // pos
                       vec3(1, 1, 1), // dir
                       vec3(p[1][0], p[1][1], p[1][2]), // col
                       p[2][0], true); // pow

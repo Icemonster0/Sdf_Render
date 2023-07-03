@@ -69,36 +69,34 @@ private:
     float cast_shadow_ray(vec3 dir, vec3 point) {
         vec3 ray_pos = point;
         float dist;
-        float min_dist;
+        float min_dist = INFINITY;
 
-        // So that the soft shadow doesnt detect the surface the shadow is to be cast on:
-        ray_pos = ray_pos + dir * max(shadow_softness, ray_collision_treshold);
+        // So that the soft shadow doesn't detect the surface the shadow is to be cast on (ok so that's (sort of) a lie):
+        ray_pos = ray_pos + dir * max(shadow_softness, ray_collision_threshold);
 
         for(int i = 0; i < max_shadow_ray_steps; i++) {
-            // cout << dist << endl;
             dist = global_sdf(ray_pos);
+
             if(type == POINT) {
-                // cout << "?";
                 float light_dist = (ray_pos-pos).length();
-                // cout << light_dist << endl;
+
                 dist = min(dist, light_dist);
+
                 if(light_dist < shadow_softness) {
-                    // cout << "X";
                     return clamp(min_dist / shadow_softness, 0.0f, 1.0f);
                 }
             }
 
+            if(dist < ray_collision_threshold) {
+                return 0;
+            }
             if(dist < shadow_softness && dist < min_dist) {
                 min_dist = dist;
-            }
-            if(dist < ray_collision_treshold) {
-                // cout << "X";
-                return 0;
             }
 
             ray_pos = ray_pos + dir * dist;
         }
-        cout << " ";
+
         return clamp(min_dist / shadow_softness, 0.0f, 1.0f);
     }
 

@@ -1,5 +1,3 @@
 /output/*
-!/output/example1.pnm
-!/output/example2.pnm
-!/output/example2.png
+!/output/example*
 /run

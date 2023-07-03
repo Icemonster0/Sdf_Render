@@ -7,8 +7,6 @@ vec3 frame[X_res][Y_res];
 
 
 void print_pnm() {
-    cout << "Saving image..." << endl;
-
     ofstream file;
     file.open(output_path);
 
@@ -145,7 +143,7 @@ vec3 cast_ray(vec3 dir) {
         if(dist < 0) {
             return vec3(0, 0, 0);
         }
-        else if(dist < ray_collision_treshold) {
+        else if(dist < ray_collision_threshold) {
             vec3 col = calc_lighting(calc_normal(ray_pos), ray_pos);
             if(fog)
                 col = col.blend(environment_col, clamp(ray_length / fog_dist, 0.0f, 1.0f));
@@ -190,5 +188,7 @@ void render() {
 
     clear_frame();
     raymarch();
+
+    cout << "Saving image..." << endl;
     print_pnm();
 }

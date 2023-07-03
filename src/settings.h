@@ -58,7 +58,7 @@
     const bool light_key_enable = true;
 
     const Light_Type light_fill_type = POINT;
-    const vec3 light_fill_dir = vec3(0.5, -0.5, 0); // used if DIR light; can never be zero
+    const vec3 light_fill_dir = vec3(0.5, -0.5, -0.2); // used if DIR light; can never be zero
     const vec3 light_fill_pos = vec3(-2, 2, 0); // used if POINT light
     const float light_fill_power = 0.3;
     const vec3 light_fill_col = vec3(0.9, 0.9, 1);
@@ -78,7 +78,7 @@
     // General
     const int X_res = 1200;
     const int Y_res = 900;
-    const std::string output_path = "output/image11.pnm";
+    const std::string output_path = "output/image.pnm";
 
 
     // Shader
@@ -92,12 +92,12 @@
     const bool fog = true;
     const float fog_dist = 40;
 
-    const bool shadows = false; // *very* broken, do not recommend
+    const bool shadows = false;
     const float shadow_softness = 0.1;
     const float max_shadow_ray_steps = 100;
 
 
     // Raymarching
-    const float ray_collision_treshold = 0.001;
+    const float ray_collision_threshold = 0.001;
     const float max_ray_steps = 300;
     const float normal_estimation_epsilon = 0.001;
