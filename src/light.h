@@ -58,11 +58,10 @@ private:
             * (pow(4.0, 1.0 - roughness) - 1.0) // increse specular amount with shininess
             * specular_factor;
 
-
         if(shadows) {
             col = col * cast_shadow_ray(light * -1, point);
         }
-
+        
         return col;
     }
 

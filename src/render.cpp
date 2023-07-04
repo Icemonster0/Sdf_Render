@@ -4,6 +4,8 @@ using namespace std;
 
 
 vec3 frame[X_res][Y_res];
+vec3 threshold_frame[X_res][Y_res];
+vec3 glow_frame[X_res][Y_res];
 
 
 void print_pnm() {
@@ -183,11 +185,58 @@ void raymarch() {
 }
 
 
+vec3 box_average(int posx, int posy) {
+    int minx = max(0, posx-glow_size);
+    int maxx = min(X_res, posx+glow_size);
+    int miny = max(0, posy-glow_size);
+    int maxy = min(Y_res, posy+glow_size);
+
+    vec3 avg;
+    for(int x = minx; x < maxx; x++) {
+        for(int y = miny; y < maxy; y++) {
+            avg = avg + threshold_frame[x][y];
+        }
+    }
+    avg = avg / (glow_size*glow_size*4); // (glow_size*2)^2
+
+    return avg;
+}
+
+
+void add_glow() {
+    // Apply threshold
+    for(int x = 0; x < X_res; x++) {
+        for(int y = 0; y < Y_res; y++) {
+            if((frame[x][y].x + frame[x][y].y + frame[x][y].z) / 3.0f >= glow_threshold)
+                threshold_frame[x][y] = frame[x][y];
+        }
+    }
+    // Box blur
+    #pragma omp parallel for schedule(static) collapse(2)
+    for(int x = 0; x < X_res; x++) {
+        for(int y = 0; y < Y_res; y++) {
+            glow_frame[x][y] = box_average(x, y);
+        }
+    }
+    // Apply Glow
+    for(int x = 0; x < X_res; x++) {
+        for(int y = 0; y < Y_res; y++) {
+            frame[x][y] = frame[x][y] + glow_frame[x][y] * glow_mix;
+        }
+    }
+}
+
+
 void render() {
     cout << "Rendering..." << endl;
 
     clear_frame();
     raymarch();
+
+    if(glow) {
+        cout << "Adding glow..." << endl;
+        add_glow();
+    }
 
     cout << "Saving image..." << endl;
     print_pnm();

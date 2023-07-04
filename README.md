@@ -3,12 +3,14 @@ A simple signed distance field based renderer.
 
 ![Example Render](/output/example2.png)
 
+There are more examples in `output` for which you can find the scene files in `scenes`.
+
 ---
 
 ### Features
 - Several sdf shapes that can be combined with hard and soft boolean operations
 - Directional and point lights with cast shadows
-- Blinn-Phong shader with settings for color, roughness and light influencess
+- Blinn-Phong shader with settings for color, roughness and light influences
 - Loading scenes from files (see syntax in `scenes/syntax.md`)
 
 ---

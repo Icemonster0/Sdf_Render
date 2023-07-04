@@ -92,9 +92,14 @@
     const bool fog = true;
     const float fog_dist = 40;
 
-    const bool shadows = false;
+    const bool shadows = true;
     const float shadow_softness = 0.1;
     const float max_shadow_ray_steps = 100;
+
+    const bool glow = true;
+    const float glow_threshold = 1;
+    const int glow_size = 70;
+    const float glow_mix = 0.5;
 
 
     // Raymarching

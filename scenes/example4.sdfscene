@@ -1,0 +1,5 @@
+# Glow demo (make shure to enable glow)
+
+C: 0 5 0 | 0 0 0 | 40
+s: 0 0 0 | 1 1 1 | 40 40 -10 | 1 | 0
+d: -1 -1 -1 | 1 1 1 | 4
