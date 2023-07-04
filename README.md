@@ -3,7 +3,7 @@ A simple signed distance field based renderer.
 
 ![Example Render](/output/example2.png)
 
-There are more examples in [output](output/) for which you can find the scene files in `scenes`.
+There are more examples in [output](output/) for which you can find the scene files in [scenes](scenes/).
 
 ---
 
@@ -12,7 +12,7 @@ There are more examples in [output](output/) for which you can find the scene fi
 - Directional and point lights with cast shadows
 - Blinn-Phong shader with settings for color, roughness and light influences
 - Distance fog and glow effect
-- Loading scenes from files (see syntax in `scenes/syntax.md`)
+- Loading scenes from files (see syntax in [scenes/syntax.md](scenes/syntax.md))
 
 ---
 
@@ -24,5 +24,5 @@ There are more examples in [output](output/) for which you can find the scene fi
 ---
 
 ### Running
-You can configure the shader by editing `src/settings.h`. There, at the bottom, you should also set the output path and optionally at the top the scene file to be loaded.  
-Run `make` in the project root directory to generate the executable. You will need to remake every time you change `src/settings.h`.
+You can configure the shader by editing [src/settings.h](src/settings.h). There, at the bottom, you should also set the output path and optionally at the top the scene file to be loaded.  
+Run `make` in the project root directory to generate the executable. You will need to remake every time you change [src/settings.h](src/settings.h).
