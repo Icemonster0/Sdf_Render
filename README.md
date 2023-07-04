@@ -3,7 +3,7 @@ A simple signed distance field based renderer.
 
 ![Example Render](/output/example2.png)
 
-There are more examples in `output` for which you can find the scene files in `scenes`.
+There are more examples in [output](output/) for which you can find the scene files in `scenes`.
 
 ---
 
