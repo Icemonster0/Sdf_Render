@@ -238,6 +238,6 @@ void render() {
         add_glow();
     }
 
-    cout << "Saving image..." << endl;
+    cout << "Saving image " << output_path << "..." << endl;
     print_pnm();
 }
