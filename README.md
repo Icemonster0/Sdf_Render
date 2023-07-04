@@ -11,6 +11,7 @@ There are more examples in [output](output/) for which you can find the scene fi
 - Several sdf shapes that can be combined with hard and soft boolean operations
 - Directional and point lights with cast shadows
 - Blinn-Phong shader with settings for color, roughness and light influences
+- Distance fog and glow effect
 - Loading scenes from files (see syntax in `scenes/syntax.md`)
 
 ---
