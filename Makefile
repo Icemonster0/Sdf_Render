@@ -1,6 +1,6 @@
 CPP = g++
 FLAGS = -O3 -fopenmp
-HEADERS = src/includes.h src/light.h src/object.h src/settings.h src/vec3.h
+HEADERS = src/includes.h src/light.h src/object.h src/settings.h src/vec3.h src/timer.h
 
 Sdf_Render: main.o render.o $(HEADERS)
 	$(CPP) $(FLAGS) -o Sdf_Render main.o render.o

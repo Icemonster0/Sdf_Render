@@ -4,8 +4,8 @@ using namespace std;
 
 
 vec3 frame[X_res][Y_res];
-vec3 threshold_frame[X_res][Y_res];
 vec3 glow_frame[X_res][Y_res];
+vec3 glow_tmp_frame[X_res][Y_res];
 
 
 void print_pnm() {
@@ -194,7 +194,7 @@ vec3 box_average(int posx, int posy) {
     vec3 avg;
     for(int x = minx; x < maxx; x++) {
         for(int y = miny; y < maxy; y++) {
-            avg = avg + threshold_frame[x][y];
+            avg = avg + glow_frame[x][y];
         }
     }
     avg = avg / (glow_size*glow_size*4); // (glow_size*2)^2
@@ -205,20 +205,33 @@ vec3 box_average(int posx, int posy) {
 
 void add_glow() {
     // Apply threshold
-    for(int x = 0; x < X_res; x++) {
-        for(int y = 0; y < Y_res; y++) {
-            if((frame[x][y].x + frame[x][y].y + frame[x][y].z) / 3.0f >= glow_threshold)
-                threshold_frame[x][y] = frame[x][y];
-        }
-    }
-    // Box blur
     #pragma omp parallel for schedule(static) collapse(2)
     for(int x = 0; x < X_res; x++) {
         for(int y = 0; y < Y_res; y++) {
-            glow_frame[x][y] = box_average(x, y);
+            if((frame[x][y].x + frame[x][y].y + frame[x][y].z) / 3.0f >= glow_threshold)
+                glow_frame[x][y] = frame[x][y];
         }
     }
+
+    for(int i = 0; i < blur_iterations; i++) {
+        // Box blur
+        #pragma omp parallel for schedule(static) collapse(2)
+        for(int x = 0; x < X_res; x++) {
+            for(int y = 0; y < Y_res; y++) {
+                glow_tmp_frame[x][y] = box_average(x, y);
+            }
+        }
+        // Copy back to glow_frame
+        #pragma omp parallel for schedule(static) collapse(2)
+        for(int x = 0; x < X_res; x++) {
+            for(int y = 0; y < Y_res; y++) {
+                glow_frame[x][y] = glow_tmp_frame[x][y];
+            }
+        }
+    }
+
     // Apply Glow
+    #pragma omp parallel for schedule(static) collapse(2)
     for(int x = 0; x < X_res; x++) {
         for(int y = 0; y < Y_res; y++) {
             frame[x][y] = frame[x][y] + glow_frame[x][y] * glow_mix;
@@ -228,14 +241,27 @@ void add_glow() {
 
 
 void render() {
-    cout << "Rendering..." << endl;
+    Timer timer;
 
+    cout << "Rendering..." << flush;
+
+    timer.start();
     clear_frame();
     raymarch();
+    timer.stop();
+
+    cout << " " << float(int(timer.sec()*100)/100.0f) << "s" << endl;
+    timer.reset();
 
     if(glow) {
-        cout << "Adding glow..." << endl;
+        cout << "Adding glow..." << flush;
+
+        timer.start();
         add_glow();
+        timer.stop();
+
+        cout << " " << float(int(timer.sec()*100)/100.0f) << "s" << endl;
+        timer.reset();
     }
 
     cout << "Saving image " << output_path << "..." << endl;

@@ -10,6 +10,7 @@
 
 // util
 #include "vec3.h"
+#include "timer.h"
 
 // settings
 #include "settings.h"

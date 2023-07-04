@@ -6,7 +6,7 @@
 // Scene -----------------------------------------------------------------------
 
     const bool import_scene = true;
-    const std::string scene_path = "scenes/example2.sdfscene";
+    const std::string scene_path = "scenes/example4.sdfscene";
 
     // Camera
     const vec3 camera_pos = vec3(0, 3, 0);
@@ -98,7 +98,8 @@
 
     const bool glow = true;
     const float glow_threshold = 1;
-    const int glow_size = 70;
+    const int glow_size = 40;
+    const int blur_iterations = 2;
     const float glow_mix = 0.5;
 
 
