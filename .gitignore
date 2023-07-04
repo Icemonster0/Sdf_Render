@@ -1,3 +1,8 @@
 /output/*
 !/output/example*
 /run
+/main.o
+/render.o
+/a.out
+/Sdf_Render
+/compile.sh
